@@ -42,7 +42,7 @@ local function get_parent_class(callback)
     position = "50%",
     size = {
       width = 30,
-      height = 4,
+      height = 3,
     },
     relative = "editor",
     border = {
