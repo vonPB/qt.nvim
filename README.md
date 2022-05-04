@@ -7,14 +7,16 @@ Qt helper functions for nvim.
 ### Dependencies
 
 - [nui.nvim](https://github.com/MunifTanjim/nui.nvim)
-- [plenary.nvim](https://github.com/nvim-lua/plenary.nvim)?
+
+#### Optional
+
+- [which-key](https://github.com/folke/which-key.nvim)
 
 ### Installation
 
 Using [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```viml
-Plug 'MunifTanjim/nui.nvim'
 Plug 'vonpb/qt.nvim'
 
 " Somwhere after plugins are loaded
@@ -29,12 +31,22 @@ use {
     config = function()
       require('qt').setup()
   }
-
 ```
 
-### Usage
+## Usage
 
-|  Keybind   | Function   |
-| ---------- | ---------- |
-| `<Leader>qu` | create UI class |
+|  Keybind   | Function | Description |
+| ---------- | -------- | ----------- |
+| `<Leader>cu` | `create_ui_class` | Creates a .h, .cpp and .ui file in current directory with class name and parent class set |
 
+
+## Support
+
+* [nvim NVIM v0.8.0-dev](https://github.com/neovim/neovim/releases/tag/nightly)
+* [Qt 5.15.2](https://www.qt.io/)
+
+### ToDo
+
+- [x] add hotkey
+- [ ] check for path in class names
+- [ ] add function to open ui files in Qt Designer

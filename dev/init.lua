@@ -18,6 +18,7 @@ end
 
 -- executes the run method in the package
 local run_action = function()
+  require(package_name).setup()
   require(package_name).create_ui_class()
 end
 
