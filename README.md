@@ -58,7 +58,7 @@ lvim.builtin.which_key.mappings["Q"] = {
 #### nvim api
 
 ```lua
-vim.api.nvim_set_keymap('n', 'Q', '<cmd>lua require("qt".create_ui_class()<CR>', {}))
+vim.api.nvim_set_keymap('n', 'Q', '<cmd>lua require("qt").create_ui_class()<CR>', {})
 ```
 
 ### Functions
