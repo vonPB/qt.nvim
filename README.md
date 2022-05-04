@@ -64,7 +64,7 @@ vim.api.nvim_set_keymap('n', 'Q', '<cmd>lua require("qt").create_ui_class()<CR>'
 ### Functions
 | Function | Description |
 | -------- | ----------- |
-| `create_ui_class` | Creates a .h, .cpp and .ui file in current directory with class name and parent class set |
+| `create_ui_class` | create .h, .cpp and .ui files in current dir |
 
 
 ## Support
