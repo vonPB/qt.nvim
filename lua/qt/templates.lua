@@ -12,7 +12,7 @@ class ]] .. name .. [[ : public ]] .. parent .. [[ {
 Q_OBJECT
 
 public:
-    explicit ]] .. name .. [[(]] .. parent .. [[ *parent = nullptr);
+    explicit ]] .. name .. [[(QWidget *parent = nullptr);
 
     ~]] .. name .. [[() override;
 
@@ -30,8 +30,8 @@ local function implementation(name, parent)
 #include "ui_]] .. name .. [[.h"
 
 
-]] .. name .. [[::]] .. name .. [[(]] .. parent .. [[ *parent) :
-        ]] .. parent .. [[(parent), ui(new Ui::]] .. name .. [[) {
+]] .. name .. [[::]] .. name .. [[(QWidget *parent) :
+        QWidget(parent), ui(new Ui::]] .. name .. [[) {
     ui->setupUi(this);
 }
 
