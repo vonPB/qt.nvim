@@ -1,5 +1,4 @@
 ## qt.nvim
-
 Qt helper functions for nvim.
 
 <img width="525" alt="image" src="https://user-images.githubusercontent.com/65032978/166718514-1a7ea6b4-d25f-4b2e-93bc-9d7d6c11ee12.png">
@@ -50,3 +49,4 @@ require('qt').keymaps()
 - [x] add hotkey
 - [x] check for path in class names (must exist)
 - [ ] add function to open ui files in Qt Designer
+
