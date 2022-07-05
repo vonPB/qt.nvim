@@ -2,12 +2,14 @@ local templates = require("qt.templates")
 local Input = require("nui.input")
 local Menu = require("nui.menu")
 local event = require("nui.utils.autocmd").event
+local utils = require("qt.utils")
 
-local function get_input(question, callback)
+local function get_path(question, cb)
+  local path = vim.fs.normalize(vim.fn.expand('%:p:h', nil, "") .. "/")
   local input = Input({
     position = "50%",
     size = {
-      width = 30,
+      width = 80,
       height = 2,
     },
     border = {
@@ -23,9 +25,11 @@ local function get_input(question, callback)
     },
   }, {
     prompt = "> ",
-    default_value = "",
+    default_value = path,
     on_submit = function(value)
-      callback(value)
+      if value ~= path then
+        cb(value)
+      end
     end,
   })
 
@@ -37,7 +41,7 @@ local function get_input(question, callback)
   input:map("n", "<Esc>", input.input_props.on_close, { noremap = true })
 end
 
-local function get_parent_class(callback)
+local function get_parent_class(cb)
   local menu = Menu({
     position = "50%",
     size = {
@@ -70,7 +74,7 @@ local function get_parent_class(callback)
       submit = { "<CR>", "<Space>" },
     },
     on_submit = function(item)
-      callback(vim.inspect(item.text))
+      cb(vim.inspect(item.text))
     end,
   })
 
@@ -82,7 +86,9 @@ local function revert_changes()
   -- TODO
 end
 
-local function create_files(class_name, parent_class)
+local function create_files(value, parent_class)
+  local path, class_name = utils.split(value)
+
   local files = {
     header = class_name .. ".h",
     implementation = class_name .. ".cpp",
@@ -97,16 +103,18 @@ local function create_files(class_name, parent_class)
 
   local err
   for name, file in pairs(files) do
-    local ok, fd = pcall(vim.loop.fs_open, file, "w", 420)
+    -- Open file
+    local ok, fd = pcall(vim.loop.fs_open, utils.join_path(path, file), "w", 420)
     if not ok then
-      vim.api.nvim_err_writeln("Class could not be created!")
+      utils.notify("Class could not be created!")
       err = true
       break
     end
 
+    -- Write content
     ok = pcall(vim.loop.fs_write, fd, content[name], 0, nil)
     if not ok then
-      vim.api.nvim_err_writeln("Class could not be written to!")
+      utils.notify("Class could not be created!")
       err = true
       break
     end
@@ -118,21 +126,27 @@ local function create_files(class_name, parent_class)
     revert_changes()
     return
   end
-
-  vim.cmd("e " .. files.header)
+  -- Open header
+  vim.cmd("e " .. utils.join_path(path, files.header))
 end
 
 local function create_ui_class()
-  get_input("Qt UI class name?", function(class_name)
-    if not class_name then
+  get_path("Qt UI class name?", function(new_path)
+    local err = false
+    for _, extension in pairs({ "ui", "cpp", "h" }) do
+      if utils.file_exists(new_path .. "." .. extension) then
+        err = true
+      end
+    end
+    if err then
+      utils.notify("Class already exists!")
       return
     end
-
     get_parent_class(function(parent)
       if not parent then
         return
       end
-      create_files(class_name, parent:sub(2, -2))
+      create_files(new_path, parent:sub(2, -2))
     end)
   end)
 end

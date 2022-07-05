@@ -1,3 +1,4 @@
+print("Reloading")
 local package_name = 'qt'
 
 -- add the escape character to special characters
@@ -18,6 +19,7 @@ end
 
 -- executes the run method in the package
 local run_action = function()
+  print("Running...")
   require(package_name).setup()
   require(package_name).create_ui_class()
 end

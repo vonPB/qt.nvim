@@ -1,12 +1,40 @@
-local create_ui_class = require('qt.ui-class')
+local create_ui_class = require("qt.ui-class")
+local handle_command = require("qt.command-handler")
+local M = {}
 
-local function setup()
+function M.create_ui_class()
+  create_ui_class()
+end
+
+function M.setup()
+  vim.api.nvim_create_user_command('Qt',
+    function(opts)
+      handle_command(opts)
+    end,
+    { nargs = 1,
+      complete = function(ArgLead, CmdLine, CursorPos)
+        return { 'CreateUIClass' }
+      end,
+    })
+end
+
+function M.keymaps()
+  -- Lunarvim
+  if os.getenv "LUNARVIM_BASE_DIR" then
+    lvim.builtin.which_key.mappings["Q"] = {
+      name = "+Qt",
+      u = { "<cmd>lua require('qt').create_ui_class()<CR>", "Create UI class" },
+    }
+    return
+  end
+
+  --- Which_key
   if package.loaded['which-key'] then
     local wk = require('which-key')
 
     wk.register({
       ["<Leader>"] = {
-        c = {
+        Q = {
           name = "+Qt",
           u = { "<cmd>lua require('qt').create_ui_class()<CR>", "Create UI class" },
         },
@@ -16,10 +44,8 @@ local function setup()
     return
   end
 
-  vim.api.nvim_set_keymap("n", "<Leader> cu", "<cmd> lua require('qt').create_ui_class()<CR>", {})
+  -- Native
+  vim.api.nvim_set_keymap("n", "<Leader> qu", "<cmd> lua require('qt').create_ui_class()<CR>", {})
 end
 
-return {
-  create_ui_class = create_ui_class,
-  setup = setup
-}
+return M
