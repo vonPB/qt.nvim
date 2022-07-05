@@ -31,7 +31,7 @@ local function implementation(name, parent)
 
 
 ]] .. name .. [[::]] .. name .. [[(QWidget *parent) :
-        QWidget(parent), ui(new Ui::]] .. name .. [[) {
+        ]] .. parent .. [[(parent), ui(new Ui::]] .. name .. [[) {
     ui->setupUi(this);
 }
 
